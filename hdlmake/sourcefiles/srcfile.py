@@ -214,6 +214,9 @@ class LDFFile(File):
     """Lattice Diamond Project File"""
     pass
 
+class RDFFile(File):
+    """Lattice Radiant Project File"""
+    pass
 
 class LPFFile(File):
     """Lattice Preference/Constraint File"""
@@ -230,11 +233,14 @@ class EDFFile(File):
 
 LATTICE_FILE_DICT = {
     'ldf': LDFFile,
+    'rdf': RDFFile,
     'lpf': LPFFile,
     'edf': EDFFile,
     'edif': EDFFile,
     'edi': EDFFile,
     'edn': EDFFile,
+    'pdc': PDCFile,
+    'sdc': SDCFile,
     'pcf': PCFFile}
 
 
