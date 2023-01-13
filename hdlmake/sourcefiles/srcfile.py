@@ -230,6 +230,9 @@ class EDFFile(File):
     """EDIF Netlist Files"""
     pass
 
+class PDCFile(File):
+    """Physical Design Constraints"""
+    pass
 
 LATTICE_FILE_DICT = {
     'ldf': LDFFile,
@@ -245,10 +248,6 @@ LATTICE_FILE_DICT = {
 
 
 # MICROSEMI/ACTEL FILES
-
-class PDCFile(File):
-    """Physical Design Constraints"""
-    pass
 
 
 MICROSEMI_FILE_DICT = {
