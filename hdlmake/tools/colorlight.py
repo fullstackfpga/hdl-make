@@ -39,7 +39,7 @@ class ToolColorlight(MakefileSyn):
         'name': 'Colorlight',
         'id': 'Colorlight',
         'windows_bin': None,
-        'linux_bin': 'yosys -p',
+        'linux_bin': 'yosys -c',
         'project_ext': ''}
 
     STANDARD_LIBS = []
