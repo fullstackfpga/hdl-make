@@ -101,10 +101,7 @@ endif""")
                         continue
                     file_list.append(shell.tclpath(file_aux.rel_path()))
             if not file_list == []:
-                ret.append(
-                   'SOURCES_{0} := \\\n'
-                   '{1}\n'.format(filetype.__name__,
-                               ' \\\n'.join(file_list)))
+                ret.append( 'SOURCES_{0} += ' '{1}\n'.format(filetype.__name__, ' \n' 'SOURCES_{0} += '.format(filetype.__name__).join(file_list)))
                 if not fileset_dict[filetype] is None:
                     sources_list.append(filetype)
         self.writeln('\n'.join(ret))
