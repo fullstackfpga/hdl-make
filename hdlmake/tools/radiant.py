@@ -28,7 +28,7 @@
 
 from __future__ import absolute_import
 from .makefilesyn import MakefileSyn
-from ..sourcefiles.srcfile import SDCFILE, PDCFile, VHDLFile, VerilogFile
+from ..sourcefiles.srcfile import EDFFile, LPFFile, VHDLFile, VerilogFile
 
 
 class ToolRadiant(MakefileSyn):
@@ -39,42 +39,42 @@ class ToolRadiant(MakefileSyn):
         'name': 'Radiant',
         'id': 'radiant',
         'windows_bin': 'pnmainc.exe',
-        'linux_bin': 'radiantc',
+        'linux_bin': 'radiantc ',
         'project_ext': 'rdf'}
 
     STANDARD_LIBS = ['ieee', 'std']
 
-    _LATTICE_SOURCE = 'prj_src {0} $(sourcefile)'
+    _LATTICE_SOURCE = 'prj_add_source {0} $(sourcefile)'
 
     SUPPORTED_FILES = {
-        PDCFile: _LATTICE_SOURCE.format('add -exclude') + '; ' +
-        SDCFile: _LATTICE_SOURCE.format('add -exclude') + '; ' +
+        EDFFile: _LATTICE_SOURCE.format('add'),
+        LPFFile: _LATTICE_SOURCE.format('add -exclude') + '; ' +
                  _LATTICE_SOURCE.format('enable')}
 
     HDL_FILES = {
         VHDLFile: _LATTICE_SOURCE.format('add'),
         VerilogFile: _LATTICE_SOURCE.format('add')}
 
-    CLEAN_TARGETS = {'clean': ["*.sty", "$(PROJECT)"],
+    CLEAN_TARGETS = {'clean': ["*.sty", "impl", "*.rdf"],
                      'mrproper': ["*.jed"]}
 
-    TCL_CONTROLS = {'create': 'prj_project new -name $(PROJECT)'
-                              ' -impl $(PROJECT)'
+    TCL_CONTROLS = {'create': 'prj_create -name $(PROJECT)'
+                              ' -impl impl'
                               ' -dev {0} -synthesis \"synplify\"',
-                    'open': 'prj_project open $(PROJECT).ldf',
-                    'save': 'prj_project save',
-                    'close': 'prj_project close',
+                    'open': 'prj_open $(PROJECT).rdf',
+                    'save': 'prj_save',
+                    'close': 'prj_close',
                     'project': '$(TCL_CREATE)\n'
                                'source files.tcl\n'
                                '$(TCL_SAVE)\n'
                                '$(TCL_CLOSE)',
                     'par': '$(TCL_OPEN)\n'
-                           'prj_run PAR -impl $(PROJECT)\n'
+                           'prj_run PAR -impl impl\n'
                            '$(TCL_SAVE)\n'
                            '$(TCL_CLOSE)',
                     'bitstream': '$(TCL_OPEN)\n'
                                  'prj_run Export'
-                                 ' -impl $(PROJECT) -task Bitgen\n'
+                                 ' -impl impl -task Bitgen\n'
                                  '$(TCL_SAVE)\n'
                                  '$(TCL_CLOSE)',
                     'install_source': '$(PROJECT)/$(PROJECT)_$(PROJECT).jed'}
@@ -85,10 +85,11 @@ class ToolRadiant(MakefileSyn):
 
     def _makefile_syn_tcl(self):
         """Create a Diamond synthesis project by TCL"""
+        syn_family = self.manifest_dict["syn_family"]
         syn_device = self.manifest_dict["syn_device"]
         syn_grade = self.manifest_dict["syn_grade"]
         syn_package = self.manifest_dict["syn_package"]
         create_tmp = self._tcl_controls["create"]
-        target = syn_device + syn_grade + syn_package
+        target = syn_family + "-" + syn_device + "-" + syn_grade + syn_package
         self._tcl_controls["create"] = create_tmp.format(target.upper())
         super(ToolRadiant, self)._makefile_syn_tcl()

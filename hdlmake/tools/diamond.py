@@ -37,7 +37,7 @@ class ToolDiamond(MakefileSyn):
         'name': 'Diamond',
         'id': 'diamond',
         'windows_bin': 'pnmainc.exe',
-        'linux_bin': 'diamondc',
+        'linux_bin': 'diamondc ',
         'project_ext': 'ldf'}
 
     STANDARD_LIBS = ['ieee', 'std']
@@ -53,11 +53,11 @@ class ToolDiamond(MakefileSyn):
         VHDLFile: _LATTICE_SOURCE.format('add'),
         VerilogFile: _LATTICE_SOURCE.format('add')}
 
-    CLEAN_TARGETS = {'clean': ["*.sty", "$(PROJECT)"],
+    CLEAN_TARGETS = {'clean': ["*.sty", "impl", "*.ldf"],
                      'mrproper': ["*.jed"]}
 
     TCL_CONTROLS = {'create': 'prj_project new -name $(PROJECT)'
-                              ' -impl $(PROJECT)'
+                              ' -impl impl'
                               ' -dev {0} -synthesis \"synplify\"',
                     'open': 'prj_project open $(PROJECT).ldf',
                     'save': 'prj_project save',
@@ -67,12 +67,12 @@ class ToolDiamond(MakefileSyn):
                                '$(TCL_SAVE)\n'
                                '$(TCL_CLOSE)',
                     'par': '$(TCL_OPEN)\n'
-                           'prj_run PAR -impl $(PROJECT)\n'
+                           'prj_run PAR -impl impl\n'
                            '$(TCL_SAVE)\n'
                            '$(TCL_CLOSE)',
                     'bitstream': '$(TCL_OPEN)\n'
                                  'prj_run Export'
-                                 ' -impl $(PROJECT) -task Bitgen\n'
+                                 ' -impl impl -task Bitgen\n'
                                  '$(TCL_SAVE)\n'
                                  '$(TCL_CLOSE)',
                     'install_source': '$(PROJECT)/$(PROJECT)_$(PROJECT).jed'}
@@ -83,10 +83,11 @@ class ToolDiamond(MakefileSyn):
 
     def _makefile_syn_tcl(self):
         """Create a Diamond synthesis project by TCL"""
+        syn_family = self.manifest_dict["syn_family"]
         syn_device = self.manifest_dict["syn_device"]
         syn_grade = self.manifest_dict["syn_grade"]
         syn_package = self.manifest_dict["syn_package"]
         create_tmp = self._tcl_controls["create"]
-        target = syn_device + syn_grade + syn_package
+        target = syn_family + "-" + syn_device + "-" + syn_grade + syn_package
         self._tcl_controls["create"] = create_tmp.format(target.upper())
         super(ToolDiamond, self)._makefile_syn_tcl()

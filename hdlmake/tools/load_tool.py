@@ -11,6 +11,7 @@ def load_syn_tool(tool_name):
     from .vivado import ToolVivado
     from .quartus import ToolQuartus
     from .diamond import ToolDiamond
+    from .radiant import ToolRadiant
     from .libero import ToolLibero
     from .liberosoc import ToolLiberoSoC
     from .icestorm import ToolIcestorm
@@ -20,6 +21,7 @@ def load_syn_tool(tool_name):
                        'vivado': ToolVivado,
                        'quartus': ToolQuartus,
                        'diamond': ToolDiamond,
+                       'radiant': ToolRadiant,
                        'libero': ToolLibero,
                        'liberosoc': ToolLiberoSoC,
                        'colorlight': ToolColorlight,

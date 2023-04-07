@@ -62,7 +62,7 @@ class ToolColorlight(MakefileSyn):
                ' --lpf $(SOURCES_LPFFile)' +
                ' --textcfg $(PROJECT)_out.config' +
                ' --json $(PROJECT).json}',
-        'bitstream': 'catch {exec ecppack --svf $(PROJECT).svf $(PROJECT).bin}',
+        'bitstream': 'catch {exec ecppack --svf $(PROJECT).svf $(PROJECT)_out.config $(PROJECT).bit}',
         'install_source': 'catch {exec openFPGALoader -c $(JTAG_POD) $(PROJECT).bit}'}
 
     def __init__(self):
