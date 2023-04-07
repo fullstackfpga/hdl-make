@@ -48,8 +48,8 @@ class ToolColorlight(MakefileSyn):
 
     HDL_FILES = {VerilogFile: 'read_verilog $(sourcefile)'}
 
-    CLEAN_TARGETS = {'clean': ["$(PROJECT).asc", "$(PROJECT).json"],
-                     'mrproper': ["$(PROJECT).bin"]}
+    CLEAN_TARGETS = {'clean': ["$(PROJECT).asc", "$(PROJECT).json", "$(PROJECT).svf", "$(PROJECT)_out.config"],
+                     'mrproper': ["$(PROJECT).bit"]}
 
     TCL_CONTROLS = {
         'synthesize': 'yosys -import\n' +
@@ -57,12 +57,13 @@ class ToolColorlight(MakefileSyn):
                       'synth_ecp5 -top $(TOP_MODULE) -json $(PROJECT).json',
         'par': 'catch {exec nextpnr-ecp5' +
                ' --$(SYN_DEVICE)' +
+               ' --speed $(SYN_GRADE)' +
                ' --package $(SYN_PACKAGE)' +
                ' --lpf $(SOURCES_LPFFile)' +
-               ' $(PROJECT).json}',
-        'ecppack': 'catch {exec ecppack --svf $(PROJECT).svf $(PROJECT).bin}',
-        'bitstream': 'catch {exec openFPGALoader -c $(JTAG_POD) $(PROJECT).bit}',
-        'install_source': ''}
+               ' --textcfg $(PROJECT)_out.config' +
+               ' --json $(PROJECT).json}',
+        'bitstream': 'catch {exec ecppack --svf $(PROJECT).svf $(PROJECT).bin}',
+        'install_source': 'catch {exec openFPGALoader -c $(JTAG_POD) $(PROJECT).bit}'}
 
     def __init__(self):
         super(ToolColorlight, self).__init__()
