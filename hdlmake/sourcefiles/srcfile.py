@@ -253,6 +253,16 @@ LATTICE_FILE_DICT = {
 MICROSEMI_FILE_DICT = {
     'pdc': PDCFile}
 
+# GOWIN FILES
+
+class CSTFile(File):
+    """Design Constraints"""
+    pass
+
+
+GOWIN_FILE_DICT = {
+    'cst': CSTFile}
+
 
 # OHR FILES
 
