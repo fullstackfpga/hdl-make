@@ -55,8 +55,7 @@ class ToolGowinYosys(MakefileSyn):
                       'source files.tcl\n' +
                       'synth_gowin -top $(TOP_MODULE) -json $(PROJECT).json',
         'par': 'catch {exec nextpnr-gowin' +
-               ' --device $(SYN_DEVICE)' +
-               ' --package $(SYN_PACKAGE)' +
+               ' --device $(SYN_FAMILY)-$(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE)' +
                ' --cst $(SOURCES_CSTFile)' +
                ' --write $(PROJECT).pack' +
                ' --json $(PROJECT).json}',
@@ -68,6 +67,6 @@ class ToolGowinYosys(MakefileSyn):
         self._tcl_controls.update(ToolGowinYosys.TCL_CONTROLS)
 
     def _makefile_syn_top(self):
-        self.manifest_dict["syn_family"] = 'ecp5'
+        self.manifest_dict["syn_family"] = 'GW1N'
         super(ToolGowinYosys, self)._makefile_syn_top()
 

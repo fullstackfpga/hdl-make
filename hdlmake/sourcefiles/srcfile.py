@@ -369,6 +369,8 @@ def create_source_file(path, module, library=None, include_dirs=None):
         new_file = LATTICE_FILE_DICT[extension](path=path, module=module)
     elif extension in MICROSEMI_FILE_DICT:
         new_file = MICROSEMI_FILE_DICT[extension](path=path, module=module)
+    elif extension in GOWIN_FILE_DICT:
+        new_file = GOWIN_FILE_DICT[extension](path=path, module=module)
     else:
         raise Exception("Unknown extension '{}' for file {}".format(extension, path))
     return new_file
