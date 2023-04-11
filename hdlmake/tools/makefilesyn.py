@@ -56,6 +56,8 @@ TCL_INTERPRETER := $(TOOL_PATH)/$(TCL_INTERPRETER)
 endif
 
 SYN_FAMILY := {syn_family}
+SYN_FAMILY_SURFIX := {syn_family_surfix}
+SYN_DEVICE_PREFIX := {syn_device_prefix}
 SYN_DEVICE := {syn_device}
 SYN_PACKAGE := {syn_package}
 SYN_GRADE := {syn_grade}
@@ -66,6 +68,8 @@ SYN_GRADE := {syn_grade}
                 self.manifest_dict["syn_project"])[0],
             project_ext=self.TOOL_INFO["project_ext"],
             syn_family=self.manifest_dict.get("syn_family", ''),
+            syn_family_surfix=self.manifest_dict.get("syn_family_surfix", ''),
+            syn_device_prefix=self.manifest_dict["syn_device_prefix"],
             syn_device=self.manifest_dict["syn_device"],
             syn_package=self.manifest_dict["syn_package"],
             syn_grade=self.manifest_dict["syn_grade"],

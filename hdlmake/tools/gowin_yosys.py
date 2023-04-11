@@ -55,18 +55,17 @@ class ToolGowinYosys(MakefileSyn):
                       'source files.tcl\n' +
                       'synth_gowin -top $(TOP_MODULE) -json $(PROJECT).json',
         'par': 'catch {exec nextpnr-gowin' +
-               ' --device $(SYN_FAMILY)-$(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE)' +
+               ' --device $(SYN_FAMILY)$(SYN_FAMILY_SURFIX)-$(SYN_DEVICE_PREFIX)$(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE)' +
                ' --cst $(SOURCES_CSTFile)' +
                ' --write $(PROJECT).pack' +
                ' --json $(PROJECT).json}',
-        'bitstream': 'catch {exec gowin_pack -d GW1N-1 -o $(PROJECT).fs $(PROJECT).pack}',
-        'install_source': 'catch {exec openFPGALoader -c $(JTAG_POD) $(PROJECT).bit}'}
+        'bitstream': 'catch {exec gowin_pack -d $(SYN_FAMILY)-$(SYN_DEVICE) -o $(PROJECT).fs $(PROJECT).pack}',
+        'install_source': 'catch {exec openFPGALoader -c $(JTAG_POD) $(PROJECT).fs}'}
 
     def __init__(self):
         super(ToolGowinYosys, self).__init__()
         self._tcl_controls.update(ToolGowinYosys.TCL_CONTROLS)
 
     def _makefile_syn_top(self):
-        self.manifest_dict["syn_family"] = 'GW1N'
         super(ToolGowinYosys, self)._makefile_syn_top()
 
