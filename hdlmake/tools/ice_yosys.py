@@ -29,7 +29,7 @@ from .makefilesyn import MakefileSyn
 from ..sourcefiles.srcfile import VerilogFile, PCFFile
 
 
-class ToolIcestorm(MakefileSyn):
+class ToolIceYosys(MakefileSyn):
 
     """Class providing the interface for IceStorm synthesis"""
 
@@ -63,10 +63,10 @@ class ToolIcestorm(MakefileSyn):
         'install_source': ''}
 
     def __init__(self):
-        super(ToolIcestorm, self).__init__()
-        self._tcl_controls.update(ToolIcestorm.TCL_CONTROLS)
+        super(ToolIceYosys, self).__init__()
+        self._tcl_controls.update(ToolIceYosys.TCL_CONTROLS)
 
     def _makefile_syn_top(self):
         self.manifest_dict["syn_family"] = 'iCE40'
-        super(ToolIcestorm, self)._makefile_syn_top()
+        super(ToolIceYosys, self)._makefile_syn_top()
 

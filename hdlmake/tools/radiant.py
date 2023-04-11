@@ -1,11 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2013 - 2015 CERN
-# Author: Pawel Szostek (pawel.szostek@cern.ch)
-# Multi-tool support by Javier D. Garcia-Lasheras (javier@garcialasheras.com)
-#
-# This file is part of Hdlmake.
+# Copyright (c) 2023 Fullstackfpga
+# Author: Henry Feng (fullstackfpga@gmail.com)
 #
 # Hdlmake is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,8 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Hdlmake.  If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright (c) 2023 Fullstackfpga
-# Author: Henry Feng (fullstackfpga@gmail.com)
 
 """Module providing support for Lattice Radiant IDE"""
 

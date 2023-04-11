@@ -261,6 +261,7 @@ class CSTFile(File):
 
 
 GOWIN_FILE_DICT = {
+    'sdc': SDCFile,
     'cst': CSTFile}
 
 

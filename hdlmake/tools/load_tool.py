@@ -14,9 +14,10 @@ def load_syn_tool(tool_name):
     from .radiant import ToolRadiant
     from .libero import ToolLibero
     from .liberosoc import ToolLiberoSoC
-    from .icestorm import ToolIcestorm
-    from .colorlight import ToolColorlight
+    from .ice_yosys import ToolIceYosys
+    from .ecp5_yosys import ToolEcp5Yosys
     from .gowin_yosys import ToolGowinYosys
+    from .gowin import ToolGowin
     available_tools = {'ise': ToolISE,
                        'planahead':  ToolPlanAhead,
                        'vivado': ToolVivado,
@@ -25,9 +26,10 @@ def load_syn_tool(tool_name):
                        'radiant': ToolRadiant,
                        'libero': ToolLibero,
                        'liberosoc': ToolLiberoSoC,
-                       'colorlight': ToolColorlight,
+                       'ecp5_yosys': ToolEcp5Yosys,
                        'gowin_yosys': ToolGowinYosys,
-                       'icestorm': ToolIcestorm}
+                       'gowin': ToolGowin,
+                       'ice_yosys': ToolIceYosys}
     if tool_name in available_tools:
         logging.debug("Synthesis tool to be used found: %s", tool_name)
         return available_tools[tool_name]()

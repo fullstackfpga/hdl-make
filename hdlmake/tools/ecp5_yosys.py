@@ -1,10 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2013 - 2017 CERN
-# Author: Javier D. Garcia Lasheras (jgarcia@gl-research.com)
-#
-# This file is part of Hdlmake.
+# Copyright (c) 2023 Fullstackfpga
+# Author: Henry Feng (fullstackfpga@gmail.com)
 #
 # Hdlmake is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,8 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Hdlmake.  If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright (c) 2023 Fullstackfpga
-# Author: Henry Feng (fullstackfpga@gmail.com)
 
 """Module providing support for the Colorlight yosys nxtpnr flow"""
 
@@ -31,7 +27,7 @@ from .makefilesyn import MakefileSyn
 from ..sourcefiles.srcfile import VerilogFile, LPFFile
 
 
-class ToolColorlight(MakefileSyn):
+class ToolEcp5Yosys(MakefileSyn):
 
     """Class providing the interface for Colorlight synthesis"""
 
@@ -66,10 +62,10 @@ class ToolColorlight(MakefileSyn):
         'install_source': 'catch {exec openFPGALoader -c $(JTAG_POD) $(PROJECT).bit}'}
 
     def __init__(self):
-        super(ToolColorlight, self).__init__()
-        self._tcl_controls.update(ToolColorlight.TCL_CONTROLS)
+        super(ToolEcp5Yosys, self).__init__()
+        self._tcl_controls.update(ToolEcp5Yosys.TCL_CONTROLS)
 
     def _makefile_syn_top(self):
         self.manifest_dict["syn_family"] = 'ecp5'
-        super(ToolColorlight, self)._makefile_syn_top()
+        super(ToolEcp5Yosys, self)._makefile_syn_top()
 
