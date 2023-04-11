@@ -42,20 +42,25 @@ class ToolGowin(MakefileSyn):
     STANDARD_LIBS = ['ieee', 'std']
 
     SUPPORTED_FILES = {
-        SDCFile: 'add-file $(sourcefile)',
-        CSTFile: 'add-file $(sourcefile)'}
+        SDCFile: 'add_file $(sourcefile)',
+        CSTFile: 'add_file $(sourcefile)'}
 
     HDL_FILES = {
-        VHDLFile:    'add-file $(sourcefile)',
-        SVFile:      'add-file $(sourcefile)',
-        VerilogFile: 'add-file $(sourcefile)'}
+        VHDLFile:    'add_file $(sourcefile)',
+        SVFile:      'add_file $(sourcefile)',
+        VerilogFile: 'add_file $(sourcefile)'}
 
-    CLEAN_TARGETS = {'clean': [".fs", "*.gprj.user", "*.gprj", "$(PROJECT).impl", "$(PROJECT_FILE)"]}
+    CLEAN_TARGETS = {'clean': [".fs", "*.gprj.user", "*.gprj", "impl", "$(PROJECT_FILE)"],
+                     'mrproper': ["$(PROJECT).fs"]}
 
     TCL_CONTROLS = {'bitstream': '$(TCL_OPEN)\n'
-                                 'run syn'
-                                 '\n'
+                                 'source files.tcl\n'
+                                 'set_device -device_version $(SYN_DEVICE_VERSION) $(SYN_FAMILY)$(SYN_FAMILY_SURFIX)-$(SYN_DEVICE_PREFIX)$(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE)\n'
+                                 'set_option -output_base_name $(PROJECT)_proj\n'
+                                 'set_option -top_module $(TOP_MODULE)\n'
+                                 'run syn\n'
                                  'run pnr\n'
+                                 '$(TCL_SAVE)'
                                  '$(TCL_CLOSE)'}
 
     def __init__(self):

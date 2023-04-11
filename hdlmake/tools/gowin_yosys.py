@@ -44,7 +44,7 @@ class ToolGowinYosys(MakefileSyn):
     HDL_FILES = {VerilogFile: 'read_verilog $(sourcefile)'}
 
     CLEAN_TARGETS = {'clean': ["$(PROJECT).fs", "$(PROJECT).json", "$(PROJECT).pack"],
-                     'mrproper': ["$(PROJECT).bit"]}
+                     'mrproper': ["$(PROJECT).fs"]}
 
     TCL_CONTROLS = {
         'synthesize': 'yosys -import\n' +
