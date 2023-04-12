@@ -18,7 +18,7 @@
 # along with Hdlmake.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-"""Module providing support for Xilinx Vivado synthesis"""
+"""Module providing support for Gowin synthesis"""
 
 
 from __future__ import absolute_import
@@ -29,7 +29,7 @@ from ..sourcefiles.srcfile import (VHDLFile, VerilogFile, SVFile,
 
 class ToolGowin(MakefileSyn):
 
-    """Class providing the interface for Xilinx Vivado synthesis"""
+    """Class providing the interface for Gowin synthesis"""
 
     TOOL_INFO = {
         'name': 'Gowin',
@@ -50,18 +50,18 @@ class ToolGowin(MakefileSyn):
         SVFile:      'add_file $(sourcefile)',
         VerilogFile: 'add_file $(sourcefile)'}
 
-    CLEAN_TARGETS = {'clean': [".fs", "*.gprj.user", "*.gprj", "impl", "$(PROJECT_FILE)"],
+    CLEAN_TARGETS = {'clean': ["*.fs", "*.gprj.user", "*.gprj", "impl", "$(PROJECT_FILE)"],
                      'mrproper': ["$(PROJECT).fs"]}
 
-    TCL_CONTROLS = {'bitstream': '$(TCL_OPEN)\n'
-                                 'source files.tcl\n'
-                                 'set_device -device_version $(SYN_DEVICE_VERSION) $(SYN_FAMILY)$(SYN_FAMILY_SURFIX)-$(SYN_DEVICE_PREFIX)$(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE)\n'
+    TCL_CONTROLS = {'bitstream': 'source files.tcl\n'
+                                 'set_device -device_version \
+                                  $(SYN_DEVICE_VERSION) \
+                                  $(SYN_FAMILY)$(SYN_FAMILY_SURFIX)-$(SYN_DEVICE_PREFIX)$(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE)\n'
                                  'set_option -output_base_name $(PROJECT)_proj\n'
                                  'set_option -top_module $(TOP_MODULE)\n'
+                                 'set_option -use_sspi_as_gpio 1\n'
                                  'run syn\n'
-                                 'run pnr\n'
-                                 '$(TCL_SAVE)'
-                                 '$(TCL_CLOSE)'}
+                                 'run pnr'}
 
     def __init__(self):
         super(ToolGowin, self).__init__()
