@@ -234,8 +234,13 @@ class PDCFile(File):
     """Physical Design Constraints"""
     pass
 
+class LDCFile(File):
+    """LSE Design Constraints"""
+    pass
+
 LATTICE_FILE_DICT = {
     'ldf': LDFFile,
+    'ldc': LDCFile,
     'rdf': RDFFile,
     'lpf': LPFFile,
     'edf': EDFFile,

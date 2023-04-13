@@ -23,7 +23,7 @@
 
 from __future__ import absolute_import
 from .makefilesyn import MakefileSyn
-from ..sourcefiles.srcfile import EDFFile, LPFFile, VHDLFile, VerilogFile
+from ..sourcefiles.srcfile import EDFFile, LPFFile, VHDLFile, VerilogFile, SDCFile, LDCFile, PDCFile
 
 
 class ToolRadiant(MakefileSyn):
@@ -43,8 +43,10 @@ class ToolRadiant(MakefileSyn):
 
     SUPPORTED_FILES = {
         EDFFile: _LATTICE_SOURCE.format('add'),
-        LPFFile: _LATTICE_SOURCE.format('add -exclude') + '; ' +
-                 _LATTICE_SOURCE.format('enable')}
+        PDCFile: _LATTICE_SOURCE.format('add'),
+        LDCFile: _LATTICE_SOURCE.format('add'),
+        SDCFile: _LATTICE_SOURCE.format('add'),
+        LPFFile: _LATTICE_SOURCE.format('add')}
 
     HDL_FILES = {
         VHDLFile: _LATTICE_SOURCE.format('add'),
@@ -63,6 +65,10 @@ class ToolRadiant(MakefileSyn):
                                'source files.tcl\n'
                                '$(TCL_SAVE)\n'
                                '$(TCL_CLOSE)',
+                    'map': '$(TCL_OPEN)\n'
+                           'prj_run_map\n'
+                           '$(TCL_SAVE)\n'
+                           '$(TCL_CLOSE)',
                     'par': '$(TCL_OPEN)\n'
                            'prj_run PAR -impl impl\n'
                            '$(TCL_SAVE)\n'
