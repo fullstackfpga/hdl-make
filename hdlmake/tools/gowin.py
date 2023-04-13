@@ -54,12 +54,14 @@ class ToolGowin(MakefileSyn):
                      'mrproper': ["$(PROJECT).fs"]}
 
     TCL_CONTROLS = {'bitstream': 'source files.tcl\n'
-                                 'set_device -device_version \
-                                  $(SYN_DEVICE_VERSION) \
+                                 'set_device -device_version $(SYN_DEVICE_VERSION) \
                                   $(SYN_FAMILY)$(SYN_FAMILY_SURFIX)-$(SYN_DEVICE_PREFIX)$(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE)\n'
                                  'set_option -output_base_name $(PROJECT)_proj\n'
                                  'set_option -top_module $(TOP_MODULE)\n'
                                  'set_option -use_sspi_as_gpio 1\n'
+                                 'set_option -use_mspi_as_gpio 1\n'
+                                 'set_option -use_ready_as_gpio 1\n'
+                                 'set_option -use_done_as_gpio 1\n'
                                  'run syn\n'
                                  'run pnr'}
 

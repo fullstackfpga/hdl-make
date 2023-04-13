@@ -47,7 +47,7 @@ class VHDLParser(DepParser):
 
         def _preprocess(vhdl_file):
             """Preprocess the supplied VHDL file instance"""
-            buf = open(vhdl_file.path, "r").read()
+            buf = open(vhdl_file.path, "r", errors='replace').read()
             logging.debug(
                 "preprocess file %s (of length %d) in library %s",
                 vhdl_file.path, len(buf), vhdl_file.library)

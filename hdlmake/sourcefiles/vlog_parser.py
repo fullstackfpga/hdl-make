@@ -193,7 +193,7 @@ class VerilogPreprocessor(object):
                             # add include file to the dependancies
                             self.included_files.add(included_file_path)
                             # tokenize the file & prepend to the current stack
-                            decomment = _remove_comment(open(included_file_path).read())
+                            decomment = _remove_comment(open(included_file_path, "r", errors='replace').read())
                             tokens = _tok_string(decomment)
                             parts = tokens + parts
                     elif front.pptype == 'pop_macro':
@@ -232,7 +232,7 @@ class VerilogPreprocessor(object):
         # assert isinstance(vlog_file, VerilogFile)
         # assert isinstance(vlog_file, DepFile)
         self.vlog_file = vlog_file
-        buf = open(vlog_file.path, "r").read()
+        buf = open(vlog_file.path, "r", errors='replace').read()
         return self._preprocess_file(file_content=buf,
                                      file_name=vlog_file.path,
                                      library=vlog_file.library)
