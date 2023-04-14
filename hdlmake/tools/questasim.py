@@ -26,7 +26,7 @@ import os
 
 from .makefilevsim import MakefileVsim
 
-class ToolModelsim(MakefileVsim):
+class ToolQuestasim(MakefileVsim):
 
     """Class providing the interface for Mentor Questa simulator"""
 
@@ -41,7 +41,7 @@ class ToolModelsim(MakefileVsim):
                      'mrproper': ["*.vcd", "*.wlf"]}
 
     def __init__(self):
-        super(ToolModelsim, self).__init__()
+        super(ToolQuestasim, self).__init__()
         self.copy_rules["modelsim.ini"] = os.path.join(
             "$(MODELSIM_INI_PATH)", "modelsim.ini")
         self.additional_deps.append("modelsim.ini")
@@ -65,4 +65,4 @@ class ToolModelsim(MakefileVsim):
         self.manifest_dict["vlog_opt"] = modelsim_ini + vlog_opt
         vmap_opt = self.manifest_dict.get("vmap_opt", '')
         self.manifest_dict["vmap_opt"] = modelsim_ini + vmap_opt
-        super(ToolModelsim, self)._makefile_sim_options()
+        super(ToolQuestasim, self)._makefile_sim_options()

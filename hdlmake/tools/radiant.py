@@ -23,7 +23,7 @@
 
 from __future__ import absolute_import
 from .makefilesyn import MakefileSyn
-from ..sourcefiles.srcfile import EDFFile, LPFFile, VHDLFile, VerilogFile, SDCFile, LDCFile, PDCFile
+from ..sourcefiles.srcfile import EDFFile, LPFFile, VHDLFile, VerilogFile, SDCFile, LDCFile, PDCFile, IPXFile
 
 
 class ToolRadiant(MakefileSyn):
@@ -33,7 +33,7 @@ class ToolRadiant(MakefileSyn):
     TOOL_INFO = {
         'name': 'Radiant',
         'id': 'radiant',
-        'windows_bin': 'pnmainc.exe',
+        'windows_bin': 'radiantc.exe',
         'linux_bin': 'radiantc ',
         'project_ext': 'rdf'}
 
@@ -46,6 +46,7 @@ class ToolRadiant(MakefileSyn):
         PDCFile: _LATTICE_SOURCE.format('add'),
         LDCFile: _LATTICE_SOURCE.format('add'),
         SDCFile: _LATTICE_SOURCE.format('add'),
+        IPXFile: _LATTICE_SOURCE.format('add'),
         LPFFile: _LATTICE_SOURCE.format('add')}
 
     HDL_FILES = {
@@ -65,12 +66,17 @@ class ToolRadiant(MakefileSyn):
                                'source files.tcl\n'
                                '$(TCL_SAVE)\n'
                                '$(TCL_CLOSE)',
+                    'synthesize': '$(TCL_OPEN)\n'
+                           'prj_set_impl_opt -impl impl top $(TOP_MODULE)\n'
+                           'prj_run_synthesis\n'
+                           '$(TCL_SAVE)\n'
+                           '$(TCL_CLOSE)',
                     'map': '$(TCL_OPEN)\n'
                            'prj_run_map\n'
                            '$(TCL_SAVE)\n'
                            '$(TCL_CLOSE)',
                     'par': '$(TCL_OPEN)\n'
-                           'prj_run PAR -impl impl\n'
+                           'prj_run_par\n'
                            '$(TCL_SAVE)\n'
                            '$(TCL_CLOSE)',
                     'bitstream': '$(TCL_OPEN)\n'
@@ -86,6 +92,11 @@ class ToolRadiant(MakefileSyn):
 
     def _makefile_syn_tcl(self):
         """Create a Diamond synthesis project by TCL"""
+        #synth_tool = self.manifest_dict["syn_tool"]
+        #if synth_tool == "radiant_lse":
+        #    tool = "lse"
+        #else:
+        #    tool = "synplify"
         syn_family = self.manifest_dict["syn_family"]
         syn_device = self.manifest_dict["syn_device"]
         syn_grade = self.manifest_dict["syn_grade"]

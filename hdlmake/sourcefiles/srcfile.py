@@ -238,11 +238,16 @@ class LDCFile(File):
     """LSE Design Constraints"""
     pass
 
+class IPXFile(File):
+    """Lattice IPs"""
+    pass
+
 LATTICE_FILE_DICT = {
     'ldf': LDFFile,
     'ldc': LDCFile,
     'rdf': RDFFile,
     'lpf': LPFFile,
+    'ipx': IPXFile,
     'edf': EDFFile,
     'edif': EDFFile,
     'edi': EDFFile,

@@ -23,7 +23,7 @@ def load_syn_tool(tool_name):
                        'vivado': ToolVivado,
                        'quartus': ToolQuartus,
                        'diamond': ToolDiamond,
-                       'radiant': ToolRadiant,
+                       'radiant_synp': ToolRadiant,
                        'libero': ToolLibero,
                        'liberosoc': ToolLiberoSoC,
                        'ecp5_yosys': ToolEcp5Yosys,
@@ -44,6 +44,7 @@ def load_sim_tool(tool_name):
     from .iverilog import ToolIVerilog
     from .isim import ToolISim
     from .modelsim import ToolModelsim
+    from .questasim import ToolQuestasim
     from .active_hdl import ToolActiveHDL
     from .riviera import ToolRiviera
     from .ghdl import ToolGHDL
@@ -51,6 +52,7 @@ def load_sim_tool(tool_name):
     available_tools = {'iverilog': ToolIVerilog,
                        'isim': ToolISim,
                        'modelsim':  ToolModelsim,
+                       'questasim':  ToolQuestasim,
                        'active_hdl': ToolActiveHDL,
                        'riviera':  ToolRiviera,
                        'ghdl': ToolGHDL,
