@@ -1,11 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2013 - 2015 CERN
-# Author: Pawel Szostek (pawel.szostek@cern.ch)
-# Multi-tool support by Javier D. Garcia-Lasheras (javier@garcialasheras.com)
-#
-# This file is part of Hdlmake.
+# Copyright (c) 2023 Fullstackfpga
+# Author: Henry Feng (fullstackfpga@gmail.com)
 #
 # Hdlmake is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +27,7 @@ from .makefilesim import MakefileSim
 from ..sourcefiles.srcfile import VerilogFile, VHDLFile, SVFile
 
 
-class ToolIVerilog(MakefileSim):
+class ToolIVerilogCocotb(MakefileSim):
 
     """Class providing the interface for Icarus Verilog simulator"""
 
@@ -55,7 +52,7 @@ class ToolIVerilog(MakefileSim):
                                       '-c run.command'}
 
     def __init__(self):
-        super(ToolIVerilog, self).__init__()
+        super(ToolIVerilogCocotb, self).__init__()
 
     def _makefile_sim_compilation(self):
         """Generate compile simulation Makefile target for IVerilog"""
@@ -71,19 +68,10 @@ class ToolIVerilog(MakefileSim):
         self.writeln('\n')
         self._makefile_sim_dep_files()
 
-    def _makefile_sim_properties(self):
-        """Create the property list"""
-        properties = super(ToolIVerilog, self)._makefile_sim_properties()
-        for prop in properties:
-            properties_string.extend(string.Template(
-                """-P ${prop}"""))
-        return properties_string
-
     def _makefile_sim_options(self):
         """Print the IVerilog options to the Makefile"""
         iverilog_opt = self.manifest_dict.get("iverilog_opt", '')
         iverilog_string = string.Template(
             """IVERILOG_OPT := ${iverilog_opt}\n""")
-        property_string = self._makefile_sim_properties()
         self.writeln(iverilog_string.substitute(
-            iverilog_opt=iverilog_opt) + property_string)
+            iverilog_opt=iverilog_opt))

@@ -49,6 +49,20 @@ TOP_MODULE := {top_module}
         self.writeln(top_parameter.format(
             top_module=self.manifest_dict["sim_top"]))
 
+    def _makefile_sim_properties(self):
+        """Create the property list"""
+        sim_properties = self.manifest_dict.get("sim_properties")
+        language = self.manifest_dict.get("language")
+        if language == None:
+            language = "vhdl"
+        properties = []
+        fetchto = self.manifest_dict.get("fetchto")
+        if not fetchto is None:
+            properties.append(['ip_repo_paths', fetchto, 'current_fileset'])
+        if not sim_properties is None:
+            properties.extend(sim_properties)
+        return properties
+
     def _makefile_sim_options(self):
         """End stub method to write the simulation Makefile options section"""
         pass
@@ -66,17 +80,15 @@ TOP_MODULE := {top_module}
     def _makefile_sim_sources_lang(self, name, klass):
         """Generic method to write the simulation Makefile HDL sources"""
         fileset = self.fileset
-        self.write("{}_SRC := ".format(name))
         for vlog in fileset.filter(klass).sort():
-            self.writeln(vlog.rel_path() + " \\")
+            self.writeln("{}_SRC += ".format(name) + vlog.rel_path())
         self.writeln()
-        self.write("{}_OBJ := ".format(name))
         for vlog in fileset.filter(klass).sort():
             # make a file compilation indicator (these .dat files are made even
             # if the compilation process fails) and add an ending according
             # to file's extension (.sv and .vhd files may have the same
             # corename and this causes a mess
-            self.writeln(self.get_stamp_file(vlog) + " \\")
+            self.writeln("{}_OBJ += ".format(name) + self.get_stamp_file(vlog))
         self.writeln()
 
     def _makefile_sim_sources(self):

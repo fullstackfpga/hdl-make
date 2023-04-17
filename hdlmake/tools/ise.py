@@ -56,7 +56,7 @@ class ToolISE(MakefileSyn):
         'name': 'ISE',
         'id': 'ise',
         'windows_bin': 'xtclsh.exe',
-        'linux_bin': 'xtclsh',
+        'linux_bin': 'xtclsh ',
         'project_ext': 'xise'}
 
     STANDARD_LIBS = ['ieee', 'ieee_proposed', 'iSE', 'simprims', 'std',

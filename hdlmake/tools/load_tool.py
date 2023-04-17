@@ -42,6 +42,7 @@ def load_sim_tool(tool_name):
     """Funtion that checks the provided module_pool and generate an
     initialized instance of the the appropriated simulation tool"""
     from .iverilog import ToolIVerilog
+    from .iverilog_cocotb import ToolIVerilogCocotb
     from .isim import ToolISim
     from .modelsim import ToolModelsim
     from .questasim import ToolQuestasim
@@ -49,13 +50,16 @@ def load_sim_tool(tool_name):
     from .riviera import ToolRiviera
     from .ghdl import ToolGHDL
     from .vivado_sim import ToolVivadoSim
+    from .vivado_sim_uvm import ToolVivadoSimUVM
     available_tools = {'iverilog': ToolIVerilog,
+                       'iverilog_cocotb': ToolIVerilogCocotb,
                        'isim': ToolISim,
                        'modelsim':  ToolModelsim,
                        'questasim':  ToolQuestasim,
                        'active_hdl': ToolActiveHDL,
                        'riviera':  ToolRiviera,
                        'ghdl': ToolGHDL,
+                       'vivado_sim_uvm': ToolVivadoSimUVM,
                        'vivado_sim': ToolVivadoSim}
     if tool_name in available_tools:
         logging.debug("Simulation tool to be used found: %s", tool_name)
