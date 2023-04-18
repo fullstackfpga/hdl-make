@@ -258,12 +258,22 @@ class ManifestParser(ConfigParser):
              'type': ''}]
         self.add_option_list(modelsim_options)
         self.add_delimiter()
-        self.add_option(
-            'iverilog_opt',
-            default="",
-            help="Additional options for IVerilog",
-            type='')
+        iverilog_options = [
+            {'name': 'iverilog_opt',
+             'default': '',
+             'help': "Compile options for iverilog",
+             'type': ''},
+            {'name': 'iverilog_elab_param',
+             'default': {},
+             'help': "Elaborate options for iverilog",
+             'type': {}},
+            {'name': 'vvp_opt',
+             'default': '',
+             'help': "Runtime options for vvp",
+             'type': ''}]
+        self.add_option_list(iverilog_options)
         self.add_delimiter()
+        self.add_allowed_key('iverilog_elab_param', key="defparam")
         self.add_option(
             'ghdl_opt',
             default="",

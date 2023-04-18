@@ -1,8 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2023 Fullstackfpga
-# Author: Henry Feng (fullstackfpga@gmail.com)
+# Copyright (c) 2013 - 2015 CERN
+# Author: Pawel Szostek (pawel.szostek@cern.ch)
+# Multi-tool support by Javier D. Garcia-Lasheras (javier@garcialasheras.com)
+#
+# This file is part of Hdlmake.
 #
 # Hdlmake is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -46,6 +49,7 @@ class ToolIVerilogCocotb(MakefileSim):
 
     SIMULATOR_CONTROLS = {'vlog': 'echo $< >> run.command',
                           'vhdl': 'echo $< >> run.command',
+                          'simulation': 'vvp $(VVP_OPT) $(TOP_MODULE).vvp',
                           'compiler': 'iverilog $(IVERILOG_OPT) '
                                       '-s $(TOP_MODULE) '
                                       '-o $(TOP_MODULE).vvp '
@@ -56,7 +60,10 @@ class ToolIVerilogCocotb(MakefileSim):
 
     def _makefile_sim_compilation(self):
         """Generate compile simulation Makefile target for IVerilog"""
-        self.writeln("simulation: include_dirs $(VERILOG_OBJ) $(VHDL_OBJ)")
+        self.writeln("simulation: icarus_compile")
+        self.writeln("\t\t" + self.SIMULATOR_CONTROLS['simulation'])
+        self.writeln()
+        self.writeln("icarus_compile: include_dirs $(VERILOG_OBJ) $(VHDL_OBJ)")
         self.writeln("\t\t" + self.SIMULATOR_CONTROLS['compiler'])
         self.writeln()
         self.writeln("include_dirs:")
@@ -68,10 +75,27 @@ class ToolIVerilogCocotb(MakefileSim):
         self.writeln('\n')
         self._makefile_sim_dep_files()
 
+    def _makefile_sim_properties(self):
+        """Create the property list"""
+        elab_properties = self.manifest_dict.get("iverilog_elab_param")
+        elab_temp = string.Template("-P $p_name=$p_value ")
+        elab_string = ""
+        for prop_key, prop_param in elab_properties.items():
+            if prop_key == "defparam":
+                for param_name, param_value in prop_param.items():
+                    elab_string += string.Template("IVERILOG_OPT += -P $p_name=$p_value\n").substitute(p_name=param_name, p_value=param_value)
+        return elab_string
+
     def _makefile_sim_options(self):
         """Print the IVerilog options to the Makefile"""
-        iverilog_opt = self.manifest_dict.get("iverilog_opt", '')
+        iverilog_opt = self.manifest_dict.get("iverilog_opt")
         iverilog_string = string.Template(
-            """IVERILOG_OPT := ${iverilog_opt}\n""")
+            """IVERILOG_OPT += ${iverilog_opt}\n""")
+        property_string = self._makefile_sim_properties()
         self.writeln(iverilog_string.substitute(
-            iverilog_opt=iverilog_opt))
+            iverilog_opt=iverilog_opt) + property_string)
+        vvp_opt = self.manifest_dict.get("vvp_opt")
+        vvp_string = string.Template(
+            """VVP_OPT := ${vvp_opt}\n""")
+        self.writeln(vvp_string.substitute(
+            vvp_opt=vvp_opt))
