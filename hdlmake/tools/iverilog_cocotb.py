@@ -45,11 +45,11 @@ class ToolIVerilogCocotb(MakefileSim):
     HDL_FILES = {VerilogFile: '', VHDLFile: '', SVFile: ''}
 
     CLEAN_TARGETS = {'clean': ["run.command", "ivl_vhdl_work", "work"],
-                     'mrproper': ["*.vcd", "*.vvp"]}
+                     'mrproper': ["*.vcd", "*.vvp", "work", "*.xml", "*.log", "__pycache__"]}
 
     SIMULATOR_CONTROLS = {'vlog': 'echo $< >> run.command',
                           'vhdl': 'echo $< >> run.command',
-                          'simulation': 'vvp -M /home/hfeng/anaconda3/envs/fpga_dev/lib/python3.8/site-packages/cocotb/libs -m libcocotbvpi_icarus '
+                          'simulation': 'MODULE=test_$(TOP_MODULE) TESTCASE=$(TEST_CASE) TOPLEVEL=$(TOP_MODULE) TOPLEVEL_LANG=verilog vvp -M $(shell cocotb-config --lib-dir) -m libcocotbvpi_icarus '
                                         '$(TOP_MODULE).vvp '
                                         '$(VVP_OPT) ',
                           'compiler': 'iverilog $(IVERILOG_OPT) '
@@ -61,8 +61,25 @@ class ToolIVerilogCocotb(MakefileSim):
     def __init__(self):
         super(ToolIVerilogCocotb, self).__init__()
 
+    def _makefile_sim_top(self):
+        """Generic method to write the simulation Makefile top section"""
+        super(ToolIVerilogCocotb, self)._makefile_sim_top()
+        top_level = """\
+SIM   ?= icarus
+WAVES ?= 0
+
+COCOTB_HDL_TIMEUNIT      = 1ns
+COCOTB_HDL_TIMEPRECISION = 1ps
+
+TOPLEVEL = {top_module}
+MODULE   = test_{top_module}\n
+"""
+        self.writeln(top_level.format(
+            top_module=self.manifest_dict["sim_top"]))
+
     def _makefile_sim_compilation(self):
         """Generate compile simulation Makefile target for IVerilog"""
+        self.writeln("include $(shell cocotb-config --makefiles)/Makefile.sim\n\n")
         self.writeln("simulation: icarus_compile")
         self.writeln("\t\t" + self.SIMULATOR_CONTROLS['simulation'])
         self.writeln()
@@ -86,7 +103,6 @@ class ToolIVerilogCocotb(MakefileSim):
         for prop_key, prop_param in elab_properties.items():
             if prop_key == "defparam":
                 for param_name, param_value in prop_param.items():
-                    #elab_string += "IVERILOG_OPT += -P $(TOP_MODULE)" + "." + string.Template($p_name=$p_value\n").substitute(p_name=param_name, p_value=param_value)
                     elab_string += "IVERILOG_OPT += -P $(TOP_MODULE)" + "." + string.Template("$p_name=$p_value\n").substitute(p_name=param_name, p_value=param_value)
         return elab_string
 
@@ -103,3 +119,13 @@ class ToolIVerilogCocotb(MakefileSim):
             """VVP_OPT := ${vvp_opt}\n""")
         self.writeln(vvp_string.substitute(
             vvp_opt=vvp_opt))
+        test_case = self.manifest_dict.get("test_case")
+        if not test_case is None:
+            testcase_string = string.Template(
+                """TEST_CASE := ${test_case}\n""")
+            self.writeln(testcase_string.substitute(
+                test_case=test_case))
+
+    def _makefile_sim_clean(self):
+        """Generic method to write the simulation Makefile user clean target"""
+        super(ToolIVerilogCocotb, self).makefile_mrproper()
