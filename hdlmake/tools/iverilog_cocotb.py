@@ -49,11 +49,14 @@ class ToolIVerilogCocotb(MakefileSim):
 
     SIMULATOR_CONTROLS = {'vlog': 'echo $< >> run.command',
                           'vhdl': 'echo $< >> run.command',
-                          'simulation': 'vvp $(VVP_OPT) $(TOP_MODULE).vvp',
+                          'simulation': 'vvp -M /home/hfeng/anaconda3/envs/fpga_dev/lib/python3.8/site-packages/cocotb/libs -m libcocotbvpi_icarus '
+                                        '$(TOP_MODULE).vvp '
+                                        '$(VVP_OPT) ',
                           'compiler': 'iverilog $(IVERILOG_OPT) '
+                                      '-D COCOTB_SIM=1 '
                                       '-s $(TOP_MODULE) '
                                       '-o $(TOP_MODULE).vvp '
-                                      '-c run.command'}
+                                      '-f run.command'}
 
     def __init__(self):
         super(ToolIVerilogCocotb, self).__init__()
@@ -83,7 +86,8 @@ class ToolIVerilogCocotb(MakefileSim):
         for prop_key, prop_param in elab_properties.items():
             if prop_key == "defparam":
                 for param_name, param_value in prop_param.items():
-                    elab_string += string.Template("IVERILOG_OPT += -P $p_name=$p_value\n").substitute(p_name=param_name, p_value=param_value)
+                    #elab_string += "IVERILOG_OPT += -P $(TOP_MODULE)" + "." + string.Template($p_name=$p_value\n").substitute(p_name=param_name, p_value=param_value)
+                    elab_string += "IVERILOG_OPT += -P $(TOP_MODULE)" + "." + string.Template("$p_name=$p_value\n").substitute(p_name=param_name, p_value=param_value)
         return elab_string
 
     def _makefile_sim_options(self):
