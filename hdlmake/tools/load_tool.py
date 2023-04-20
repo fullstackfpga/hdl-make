@@ -45,6 +45,7 @@ def load_sim_tool(tool_name):
     from .iverilog_cocotb import ToolIVerilogCocotb
     from .isim import ToolISim
     from .modelsim import ToolModelsim
+    from .modelsim_cocotb import ToolModelsimCocotb
     from .questasim import ToolQuestasim
     from .active_hdl import ToolActiveHDL
     from .riviera import ToolRiviera
@@ -55,6 +56,7 @@ def load_sim_tool(tool_name):
                        'iverilog_cocotb': ToolIVerilogCocotb,
                        'isim': ToolISim,
                        'modelsim':  ToolModelsim,
+                       'modelsim_cocotb':  ToolModelsimCocotb,
                        'questasim':  ToolQuestasim,
                        'active_hdl': ToolActiveHDL,
                        'riviera':  ToolRiviera,
