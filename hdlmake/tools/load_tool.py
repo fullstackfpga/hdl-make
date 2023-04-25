@@ -43,6 +43,7 @@ def load_sim_tool(tool_name):
     initialized instance of the the appropriated simulation tool"""
     from .iverilog import ToolIVerilog
     from .iverilog_cocotb import ToolIVerilogCocotb
+    from .formal_sby import ToolFormalSby
     from .isim import ToolISim
     from .modelsim import ToolModelsim
     from .modelsim_cocotb import ToolModelsimCocotb
@@ -54,6 +55,7 @@ def load_sim_tool(tool_name):
     from .vivado_sim_uvm import ToolVivadoSimUVM
     available_tools = {'iverilog': ToolIVerilog,
                        'iverilog_cocotb': ToolIVerilogCocotb,
+                       'formal_sby': ToolFormalSby,
                        'isim': ToolISim,
                        'modelsim':  ToolModelsim,
                        'modelsim_cocotb':  ToolModelsimCocotb,

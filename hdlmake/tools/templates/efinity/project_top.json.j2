@@ -1,0 +1,148 @@
+{
+    "efx:project": {
+        "@name": {{project.name}},
+        "@description": {{project.desc}},
+        "@last_change_date": {{project.date}},
+        "@location": {{project.location}},
+        "@sw_version": "",
+        "@last_run_state": "",
+        "@last_run_tool": "",
+        "@last_run_flow": "",
+        "@config_result_in_sync": "true",
+        "@design_ood": "sync",
+        "@place_ood": "sync",
+        "@route_ood": "sync",
+        "@xmlns:efx": "http://www.efinixinc.com/enf_proj",
+        "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+        "@xsi:schemaLocation": "http://www.efinixinc.com/enf_proj enf_proj.xsd",
+        "efx:device_info": {
+            "efx:family": {
+                "@name": {{device.family}}
+            },
+            "efx:device": {
+                "@name": {{device.device}}
+            },
+            "efx:timing_model": {
+                "@name": {{device.speedgrade}}
+            }
+        },
+        "efx:design_info": {
+            "@def_veri_version": {{design.vlog_ver}},
+            "@def_vhdl_version": {{design.vhdl_ver}},
+            "efx:top_module": {
+                "@name": {{design.top_module}}
+            },
+            "efx:design_file": [
+                {% for design_file, design_file_type in design.files %}
+                {
+                    "@name": {{design_file}},
+                    "@version": {{design_file_type}}
+                },
+                {% endfor %}
+            ],
+            "efx:top_vhdl_arch": {
+                "@name": {{design.vhdl_top}}
+            }
+        },
+        "efx:constraint_info": {
+            "efx:sdc_file": {
+                "@name": "{{design.sdc_file}}.sdc"
+            },
+            "efx:inter_file": {
+                "@name": {{design.inter_file}}
+            }
+        },
+        "efx:sim_info": null,
+        "efx:misc_info": null,
+        "efx:synthesis": {
+            "@tool_name": "efx_map",
+            "efx:param": [
+                {
+                    "@name": "work_dir",
+                    "@value": "work_syn",
+                    "@value_type": "e_string"
+                },
+                {
+                    "@name": "write_efx_verilog",
+                    "@value": "on",
+                    "@value_type": "e_bool"
+                },
+                {
+                    "@name": "opt_mode",
+                    "@value": "speed",
+                    "@value_type": "e_option"
+                }
+            ]
+        },
+        "efx:place_and_route": {
+            "@tool_name": "efx_pnr",
+            "efx:param": [
+                {
+                    "@name": "work_dir",
+                    "@value": "work_pnr",
+                    "@value_type": "e_string"
+                },
+                {
+                    "@name": "verbose",
+                    "@value": "off",
+                    "@value_type": "e_bool"
+                },
+                {
+                    "@name": "load_delaym",
+                    "@value": "on",
+                    "@value_type": "e_bool"
+                }
+            ]
+        },
+        "efx:bitstream_generation": {
+            "@tool_name": "efx_pgm",
+            "efx:param": [
+                {
+                    "@name": "mode",
+                    "@value": "active",
+                    "@value_type": "e_option"
+                },
+                {
+                    "@name": "width",
+                    "@value": "1",
+                    "@value_type": "e_option"
+                },
+                {
+                    "@name": "cold_boot",
+                    "@value": "off",
+                    "@value_type": "e_bool"
+                },
+                {
+                    "@name": "cascade",
+                    "@value": "off",
+                    "@value_type": "e_option"
+                },
+                {
+                    "@name": "enable_roms",
+                    "@value": "on",
+                    "@value_type": "e_option"
+                },
+                {
+                    "@name": "spi_low_power_mode",
+                    "@value": "on",
+                    "@value_type": "e_bool"
+                },
+                {
+                    "@name": "io_weak_pullup",
+                    "@value": "on",
+                    "@value_type": "e_bool"
+                },
+                {
+                    "@name": "oscillator_clock_divider",
+                    "@value": "DIV8",
+                    "@value_type": "e_option"
+                },
+                {
+                    "@name": "enable_crc_check",
+                    "@value": "on",
+                    "@value_type": "e_bool"
+                }
+            ]
+        }
+    }
+}
