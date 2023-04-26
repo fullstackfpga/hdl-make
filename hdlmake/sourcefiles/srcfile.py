@@ -263,17 +263,24 @@ LATTICE_FILE_DICT = {
 MICROSEMI_FILE_DICT = {
     'pdc': PDCFile}
 
+# EFINIX FILES
+
+class XMLFile(File):
+    """Efinity Design Project"""
+    pass
+
+EFINITY_FILE_DICT = {
+    'xml': XMLFile}
+
 # GOWIN FILES
 
 class CSTFile(File):
     """Design Constraints"""
     pass
 
-
 GOWIN_FILE_DICT = {
     'sdc': SDCFile,
     'cst': CSTFile}
-
 
 # OHR FILES
 
@@ -382,6 +389,8 @@ def create_source_file(path, module, library=None, include_dirs=None):
         new_file = MICROSEMI_FILE_DICT[extension](path=path, module=module)
     elif extension in GOWIN_FILE_DICT:
         new_file = GOWIN_FILE_DICT[extension](path=path, module=module)
+    elif extension in EFINITY_FILE_DICT:
+        new_file = EFINITY_FILE_DICT[extension](path=path, module=module)
     else:
         raise Exception("Unknown extension '{}' for file {}".format(extension, path))
     return new_file

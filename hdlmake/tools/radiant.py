@@ -31,7 +31,7 @@ class ToolRadiant(MakefileSyn):
     """Class providing the interface for Lattice Radiant synthesis"""
 
     TOOL_INFO = {
-        'name': 'Radiant',
+        'name': 'radiant',
         'id': 'radiant',
         'windows_bin': 'radiantc.exe',
         'linux_bin': 'radiantc ',

@@ -32,7 +32,7 @@ class ToolGowin(MakefileSyn):
     """Class providing the interface for Gowin synthesis"""
 
     TOOL_INFO = {
-        'name': 'Gowin',
+        'name': 'gw_ide',
         'id': 'gowin',
         'windows_bin': 'gw_sh.exe ',
         'linux_bin': 'gw_sh ',
