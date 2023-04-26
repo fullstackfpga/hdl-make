@@ -94,6 +94,7 @@ class ToolEfinity(MakefileSyn):
 
     def _makefile_syn_clean(self):
         """Print the Makefile clean target for synthesis"""
-        pass
-
+        self.makefile_clean()
+        self.writeln()
+        self.makefile_mrproper()
 
