@@ -22,6 +22,11 @@ setup(
    license="GPLv3",
    url="http://www.ohwr.org/projects/hdl-make",
    packages=find_packages(),
+    package_data={
+        "hdlmake.tools": [
+            "templates/efinity/project_top.json.j2",
+        ],
+    },
    entry_points={
       'console_scripts': [
          'hdlmake = hdlmake.main:main',
@@ -34,5 +39,8 @@ setup(
       "Topic :: Utilities",
       "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
       "Topic :: Software Development :: Build Tools",
+    ],
+    install_requires=[
+        "Jinja2>=3",
     ],
    )
