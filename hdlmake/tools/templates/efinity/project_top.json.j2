@@ -1,9 +1,9 @@
 {
     "efx:project": {
-        "@name": {{project.name}},
-        "@description": {{project.desc}},
-        "@last_change_date": {{project.date}},
-        "@location": {{project.location}},
+        "@name": "{{project_name}}",
+        "@description": "{{project_desc}}",
+        "@last_change_date": "{{project_date}}",
+        "@location": "{{project_location}}",
         "@sw_version": "",
         "@last_run_state": "",
         "@last_run_tool": "",
@@ -17,39 +17,45 @@
         "@xsi:schemaLocation": "http://www.efinixinc.com/enf_proj enf_proj.xsd",
         "efx:device_info": {
             "efx:family": {
-                "@name": {{device.family}}
+                "@name": "{{device_family}}"
             },
             "efx:device": {
-                "@name": {{device.device}}
+                "@name": "{{device_device}}"
             },
             "efx:timing_model": {
-                "@name": {{device.speedgrade}}
+                "@name": "{{device_speedgrade}}"
             }
         },
         "efx:design_info": {
-            "@def_veri_version": {{design.vlog_ver}},
-            "@def_vhdl_version": {{design.vhdl_ver}},
+            "@def_veri_version": "{{design_vlog_ver}}",
+            "@def_vhdl_version": "{{design_vhdl_ver}}",
             "efx:top_module": {
-                "@name": {{design.top_module}}
+                "@name": "{{design_top_module}}
             },
             "efx:design_file": [
-                {% for design_file, design_file_type in design.files %}
+                {% for vlog_file in vlog_files %}
                 {
-                    "@name": {{design_file}},
-                    "@version": {{design_file_type}}
+                    "@name": "{{vlog_file}}",
+                    "@version": "verilog"
+                },
+                {% endfor %}
+                {% for vhdl_file in vhdl_files %}
+                {
+                    "@name": "{{vhdl_file}}",
+                    "@version": "vhdl"
                 },
                 {% endfor %}
             ],
             "efx:top_vhdl_arch": {
-                "@name": {{design.vhdl_top}}
+                "@name": {{design_vhdl_top}}
             }
         },
         "efx:constraint_info": {
             "efx:sdc_file": {
-                "@name": "{{design.sdc_file}}.sdc"
+                "@name": "{{design_sdc_file}}.sdc"
             },
             "efx:inter_file": {
-                "@name": {{design.inter_file}}
+                "@name": {{design_inter_file}}
             }
         },
         "efx:sim_info": null,

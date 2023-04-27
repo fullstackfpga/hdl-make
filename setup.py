@@ -24,7 +24,7 @@ setup(
    packages=find_packages(),
     package_data={
         "hdlmake.tools": [
-            "templates/efinity/project_top.json.j2",
+            "templates/efinity/project_top.xml.j2",
         ],
     },
    entry_points={
