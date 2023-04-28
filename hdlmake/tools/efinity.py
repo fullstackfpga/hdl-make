@@ -137,14 +137,11 @@ class ToolEfinity(MakefileSyn):
                         "'", "")
                 self.writeln("""\
 {0}: $(PROJECT).xml
+\t\t$(SYN_PRE_{2}_CMD)
 \t\t$(TCL_INTERPRETER)$(PROJECT).xml
 """.format(stage, stage_previous, stage.upper(),
            command_string, shell.touch_command()))
                 stage_previous = stage
-
-    def _makefile_syn_command(self):
-        """Create the Makefile targets for user defined commands"""
-        pass
 
     def _makefile_syn_clean(self):
         """Print the Makefile clean target for synthesis"""
