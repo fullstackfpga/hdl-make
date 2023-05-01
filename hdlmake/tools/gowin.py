@@ -68,3 +68,38 @@ class ToolGowin(MakefileSyn):
     def __init__(self):
         super(ToolGowin, self).__init__()
         self._tcl_controls.update(ToolGowin.TCL_CONTROLS)
+
+    def _makefile_syn_top(self):
+        """Create the top part of the synthesis Makefile"""
+        top_parameter = """\
+TOP_MODULE := {top_module}
+PROJECT := {project_name}
+PROJECT_FILE := $(PROJECT).{project_ext}
+TOOL_PATH := {tool_path}
+TCL_INTERPRETER := {tcl_interpreter}
+ifneq ($(strip $(TOOL_PATH)),)
+TCL_INTERPRETER := $(TOOL_PATH)/$(TCL_INTERPRETER)
+endif
+
+SYN_FAMILY := {syn_family}
+SYN_FAMILY_SURFIX := {syn_family_surfix}
+SYN_DEVICE_PREFIX := {syn_device_prefix}
+SYN_DEVICE := {syn_device}
+SYN_DEVICE_VERSION := {syn_device_version}
+SYN_PACKAGE := {syn_package}
+SYN_GRADE := {syn_grade}
+"""
+        self.writeln(top_parameter.format(
+            tcl_interpreter=self.get_tool_bin(),
+            project_name=os.path.splitext(
+                self.manifest_dict["syn_project"])[0],
+            project_ext=self.TOOL_INFO["project_ext"],
+            syn_family=self.manifest_dict.get("syn_family", ''),
+            syn_family_surfix=self.manifest_dict.get("syn_family_surfix", ''),
+            syn_device_prefix=self.manifest_dict.get("syn_device_prefix", ''),
+            syn_device_version=self.manifest_dict.get("syn_device_version", 'NA'),
+            syn_device=self.manifest_dict["syn_device"],
+            syn_package=self.manifest_dict["syn_package"],
+            syn_grade=self.manifest_dict["syn_grade"],
+            tool_path=self.manifest_dict["syn_path"],
+            top_module=self.manifest_dict["syn_top"]))
