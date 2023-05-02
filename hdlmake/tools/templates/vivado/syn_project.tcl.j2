@@ -1,0 +1,16 @@
+set spt_path {{script_path}}
+
+{% for tcl_script in syn_tcl_scripts %}
+source $spt_path/{{tcl_script}}
+{% endfor %}
+
+syn_proj_create {{proj_name}}
+
+syn_proj_files {{proj_name}} [list \
+{% for syn_proj_file in syn_proj_files %}
+ "{{syn_proj_file}}" \
+{% endfor %}
+ ]
+
+syn_proj_run {{proj_name}}
+

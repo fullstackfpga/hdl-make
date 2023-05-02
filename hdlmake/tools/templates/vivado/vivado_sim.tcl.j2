@@ -1,0 +1,10 @@
+# List of defines which will be passed to the simulation
+
+proc sim_proj_create {project_name {part "xc7a100tffg484-1"}} {
+  {{cust_sim_proj_create}}  $project_name $part
+}
+
+proc sim_proj_run {project_name } {
+  {{cust_sim_proj_run}} $project_name
+}
+

@@ -1,0 +1,33 @@
+set spt_path {{script_path}}
+
+{% for sim_tcl_script in sim_tcl_scripts %}
+source $spt_path/{{sim_tcl_script}}
+{% endfor %}
+
+if {$argc < 1} {
+  puts "Expecting at least one argument that specifies the test configuration"
+  exit 1
+} else {
+  set cfg_file [lindex $argv 0]
+}
+
+# Read config file
+source "{{cfg_path}}/${cfg_file}"
+
+# Set the project name
+set sim_proj_name [file rootname $cfg_file]
+
+# Create the project
+sim_proj_create $sim_proj_name {{sim_device}}
+
+# Add test bench files to the project
+{% for sim_proj_file in sim_proj_files %}
+add_files -norecurse -fileset sim_1 ${{sim_proj_file}}
+}
+{% endfor %}
+set_property -name "top" -value "{{tb_top}}" -objects [get_filesets sim_1]
+
+#set the test program
+lappend sim_testcases "TEST_PROGRAM={{test_program}}"
+
+sim_proj_run $sim_proj_name
