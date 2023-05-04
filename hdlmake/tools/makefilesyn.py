@@ -33,6 +33,7 @@ class MakefileSyn(ToolMakefile):
         self.makefile_check_tool('syn_path')
         self.makefile_includes()
         self._makefile_syn_top()
+        self.makefile_include_dirs()
         self._makefile_syn_tcl()
         self._makefile_syn_local()
         self._makefile_syn_files()

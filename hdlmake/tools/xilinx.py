@@ -68,6 +68,7 @@ $(TCL_CLOSE)'''
                                'source files.tcl\n'
                                'update_compile_order -fileset sources_1\n'
                                'update_compile_order -fileset sim_1\n'
+                               'set_property include_dirs {{$(INCLUDE_DIR)}} [current_fileset]\n'
                                '$(TCL_CLOSE)',
                     'synthesize': _XILINX_RUN,
                     'par': _XILINX_RUN,

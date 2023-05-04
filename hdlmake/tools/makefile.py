@@ -138,6 +138,15 @@ class ToolMakefile(object):
                     self.writeln("include %s" % file_aux)
             self.writeln()
 
+    def makefile_include_dirs(self):
+        """Add the includ_dirs into makefiles"""
+        if self.manifest_dict.get("include_dirs") is None:
+            self.writeln("INCLUDE_DIRS :=")
+        else:
+            for inc_dir in self.manifest_dict.get("include_dirs"):
+                self.writeln("INCLUDE_DIRS += %s" % inc_dir)
+        self.writeln()
+
     def makefile_clean(self):
         """Print the Makefile target for cleaning intermediate files"""
         self.writeln("CLEAN_TARGETS := $(LIBS) " +

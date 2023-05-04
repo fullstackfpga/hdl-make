@@ -39,8 +39,8 @@ class ToolVivado(ToolXilinx):
     TOOL_INFO = {
         'name': 'vivado',
         'id': 'vivado',
-        'windows_bin': 'vivado -mode tcl -source ',
-        'linux_bin': 'vivado -mode tcl -source ',
+        'windows_bin': 'vivado -mode batch -source ',
+        'linux_bin': 'vivado -mode batch -source ',
         'project_ext': 'xpr'
     }
 
