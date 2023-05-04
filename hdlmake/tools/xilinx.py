@@ -66,9 +66,12 @@ $(TCL_CLOSE)'''
                     'project': '$(TCL_CREATE)\n'
                                '{0}\n'
                                'source files.tcl\n'
+                               'set_property include_dirs {{$(INCLUDE_DIR)}} [current_fileset]\n'
+                               'report_ip_status -name ip_status\n'
+                               'upgrade_ip -srcset ipcore_acc_u32b [get_ips  {{$(IP_CORES)}}] -log ip_upgrade.log\n'
+                               'export_ip_user_files -of_objects [get_ips {{$(IP_CORES)}}] -no_script -sync -force -quiet\n'
                                'update_compile_order -fileset sources_1\n'
                                'update_compile_order -fileset sim_1\n'
-                               'set_property include_dirs {{$(INCLUDE_DIR)}} [current_fileset]\n'
                                '$(TCL_CLOSE)',
                     'synthesize': _XILINX_RUN,
                     'par': _XILINX_RUN,
