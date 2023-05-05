@@ -26,8 +26,10 @@
 
 from __future__ import absolute_import
 from .makefilesyn import MakefileSyn
-from ..sourcefiles.srcfile import VHDLFile, VerilogFile, SVFile, TCLFile
+from ..sourcefiles.srcfile import VHDLFile, VerilogFile, SVFile, TCLFile, XCIFile
+import os
 import logging
+from ..util import shell
 
 
 class ToolXilinx(MakefileSyn):
@@ -38,12 +40,17 @@ class ToolXilinx(MakefileSyn):
         "add_files -norecurse $(sourcefile); "
         "set_property IS_GLOBAL_INCLUDE 1 [get_files $(sourcefile)]")
 
+    _XILINX_CORE = (
+        "IP_CORES += [get_files $(sourcefile)]")
+
     HDL_FILES = {
         VHDLFile: _XILINX_SOURCE,
         VerilogFile: _XILINX_SOURCE,
         SVFile: _XILINX_SOURCE}
 
     SUPPORTED_FILES = {TCLFile: 'source $(sourcefile)'}
+
+    CORE_FILES = { XCIFile: _XILINX_CORE}
 
     CLEAN_TARGETS = {'mrproper': ["*.bit", "*.bin"]}
 
@@ -66,9 +73,10 @@ $(TCL_CLOSE)'''
                     'project': '$(TCL_CREATE)\n'
                                '{0}\n'
                                'source files.tcl\n'
-                               'set_property include_dirs {{$(INCLUDE_DIR)}} [current_fileset]\n'
-                               'report_ip_status -name ip_status\n'
-                               'upgrade_ip -srcset ipcore_acc_u32b [get_ips  {{$(IP_CORES)}}] -log ip_upgrade.log\n'
+                               'set_property include_dirs {{$(INCLUDE_DIRS)}} [current_fileset]\n'
+                               'update_compile_order -fileset sources_1\n'
+                               'report_ip_status\n'
+                               'upgrade_ip [get_ips {{$(IP_CORES)}}] -log ip_upgrade.log\n'
                                'export_ip_user_files -of_objects [get_ips {{$(IP_CORES)}}] -no_script -sync -force -quiet\n'
                                'update_compile_order -fileset sources_1\n'
                                'update_compile_order -fileset sim_1\n'
@@ -146,3 +154,25 @@ $(TCL_CLOSE)'''
             "impl_1",
             "\n".join(par_new))
         super(ToolXilinx, self)._makefile_syn_tcl()
+
+
+    def _makefile_syn_files(self):
+        """Write the files TCL section of the Makefile"""
+        super(ToolXilinx, self)._makefile_syn_files()
+        ret = []
+        fileset_dict = {}
+        sources_list = []
+        fileset_dict.update(self.CORE_FILES)
+        for filetype in fileset_dict:
+            ip_list = []
+            for file_aux in self.fileset:
+                if isinstance(file_aux, filetype):
+                    ip_core = os.path.splitext(os.path.basename(shell.tclpath(file_aux.rel_path())))[0]
+                    ip_list.append(ip_core)
+            if not ip_list == []:
+                ret.append( 'IP_CORES += ' '{1}\n'.format(filetype.__name__, ' \n' 'IP_CORES += '.format(filetype.__name__).join(ip_list)))
+                if not fileset_dict[filetype] is None:
+                    sources_list.append(filetype)
+        self.writeln('\n'.join(ret))
+
+
