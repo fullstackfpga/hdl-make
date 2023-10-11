@@ -20,11 +20,11 @@
 
 """Module providing support for Gowin synthesis"""
 
-
 from __future__ import absolute_import
 from .makefilesyn import MakefileSyn
 from ..sourcefiles.srcfile import (VHDLFile, VerilogFile, SVFile,
                                    SDCFile, CSTFile)
+import os
 
 
 class ToolGowin(MakefileSyn):
