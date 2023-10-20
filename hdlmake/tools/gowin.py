@@ -25,6 +25,7 @@ from .makefilesyn import MakefileSyn
 from ..sourcefiles.srcfile import (VHDLFile, VerilogFile, SVFile,
                                    SDCFile, CSTFile)
 import os
+import string
 
 
 class ToolGowin(MakefileSyn):
@@ -58,7 +59,7 @@ class ToolGowin(MakefileSyn):
                                   $(SYN_FAMILY)$(SYN_FAMILY_SURFIX)-$(SYN_DEVICE_PREFIX)$(SYN_DEVICE)$(SYN_PACKAGE)$(SYN_GRADE)\n'
                                  'set_option -output_base_name $(PROJECT)_proj\n'
                                  'set_option -top_module $(TOP_MODULE)\n'
-                                 'set_option -use_sspi_as_gpio 1\n'
+                                 '$(SYN_PROPERTIES)\n'
                                  'set_option -use_mspi_as_gpio 1\n'
                                  'set_option -use_ready_as_gpio 1\n'
                                  'set_option -use_done_as_gpio 1\n'
@@ -68,6 +69,20 @@ class ToolGowin(MakefileSyn):
     def __init__(self):
         super(ToolGowin, self).__init__()
         self._tcl_controls.update(ToolGowin.TCL_CONTROLS)
+
+    def _makefile_syn_properties(self):
+        """Create the user property list"""
+        prop_temp = string.Template("set_option -$p_name $p_value ")
+        prop_string = ""
+        user_properties={}
+        for user_property in self.manifest_dict.get("syn_properties", []):
+            if not isinstance(user_property, dict):
+                raise Exception("gowin property should be defined as dict: "
+                                + str(user_property))
+            user_properties.update(user_property)
+        for prop_key, prop_param in user_properties.items():
+          prop_string += prop_temp.substitute(p_name=prop_key, p_value=prop_param)
+        return prop_string
 
     def _makefile_syn_top(self):
         """Create the top part of the synthesis Makefile"""
@@ -88,6 +103,7 @@ SYN_DEVICE := {syn_device}
 SYN_DEVICE_VERSION := {syn_device_version}
 SYN_PACKAGE := {syn_package}
 SYN_GRADE := {syn_grade}
+SYN_PROPERTIES := {syn_properties}
 """
         self.writeln(top_parameter.format(
             tcl_interpreter=self.get_tool_bin(),
@@ -101,5 +117,6 @@ SYN_GRADE := {syn_grade}
             syn_device=self.manifest_dict["syn_device"],
             syn_package=self.manifest_dict["syn_package"],
             syn_grade=self.manifest_dict["syn_grade"],
+            syn_properties=self._makefile_syn_properties(),
             tool_path=self.manifest_dict["syn_path"],
             top_module=self.manifest_dict["syn_top"]))
