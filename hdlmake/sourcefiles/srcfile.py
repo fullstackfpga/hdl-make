@@ -278,8 +278,18 @@ class CSTFile(File):
     """Design Constraints"""
     pass
 
+class GAOFile(File):
+    """Post Configuration file"""
+    pass
+
+class GSCFile(File):
+    """Post Configuration file"""
+    pass
+
 GOWIN_FILE_DICT = {
     'sdc': SDCFile,
+    'gao': GAOFile,
+    'gsc': GSCFile,
     'cst': CSTFile}
 
 # OHR FILES

@@ -23,7 +23,7 @@
 from __future__ import absolute_import
 from .makefilesyn import MakefileSyn
 from ..sourcefiles.srcfile import (VHDLFile, VerilogFile, SVFile,
-                                   SDCFile, CSTFile)
+                                   SDCFile, CSTFile, GSCFile, GAOFile)
 import os
 import string
 
@@ -44,6 +44,8 @@ class ToolGowin(MakefileSyn):
 
     SUPPORTED_FILES = {
         SDCFile: 'add_file $(sourcefile)',
+        GSCFile: 'add_file $(sourcefile)',
+        GAOFile: 'add_file $(sourcefile)',
         CSTFile: 'add_file $(sourcefile)'}
 
     HDL_FILES = {
